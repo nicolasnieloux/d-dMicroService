@@ -3,6 +3,7 @@ package com.donjon.ddmicroservice.game;
 import jakarta.persistence.*;
 
 @Entity
+@Table (name = "donjon")
 public class GameEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +16,11 @@ public class GameEntity {
     private long id_personnage;
 
     public GameEntity() {
+    }
+
+    public GameEntity(long id, long idPersonnage) {
+        this.id=id;
+        this.id_personnage=idPersonnage;
     }
 
     public long getId() {

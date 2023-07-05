@@ -8,34 +8,38 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class GameService {
+public interface GameService {
 
-    private final GameRepository games;
+    GameDto createGame(GameDto gameDto);
+    GameDto getGameById(long gameId);
 
-    public GameService(GameRepository games) {
-        this.games = games;
-    }
+    List<GameDto> getAllGames();
 
-    public List<GameEntity> getGame(){
+    void deleteGame(long gameId);
 
-        return games.findAll();
+//    private final GameRepository games;
+//
+//    public GameService(GameRepository games) {
+//        this.games = games;
+//    }
+//
+//    public List<GameEntity> getGames(){
+//
+//        return games.findAll();
+//
+//    }
+//    public void deleteGame(long id){
+//        GameEntity gameEntity = games.findById(id).orElse(null);
+//
+//        if (gameEntity==null){
+//            return ;
+//        }
+//        RestTemplate restTemplate = new RestTemplate();
+//        restTemplate.delete("http://character/" + gameEntity.getId_personnage());
+//
+//        restTemplate.delete("http://board/" + gameEntity.getId_board());
+//
+//        games.deleteById(id);
+//    }
 
-    }
-    public void deleteGame(long id){
-        GameEntity gameEntity = games.findById(id).orElse(null);
-
-        if (gameEntity==null){
-            return ;
-        }
-        RestTemplate restTemplate = new RestTemplate();
-
-        try {
-            restTemplate.delete("http://character/" + gameEntity.getId_personnage());
-        }catch (E)
-
-        restTemplate.delete("http://board/" + gameEntity.getId_board());
-
-        games.deleteById(id);
-
-    }
 }

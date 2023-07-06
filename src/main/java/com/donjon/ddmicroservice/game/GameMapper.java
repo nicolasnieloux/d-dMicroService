@@ -13,7 +13,9 @@ public class GameMapper {
     public static GameEntity mapToGameEntity (GameDto gameDto){
         GameEntity gameEntity = new GameEntity(
                 gameDto.getId(),
-                gameDto.getIdPersonnage()
+                gameDto.getIdPersonnage(),
+                gameDto.getIdBoard(),
+                gameDto.getIdPlayer()
         );
         return gameEntity;
     }

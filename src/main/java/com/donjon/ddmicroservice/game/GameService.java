@@ -11,9 +11,12 @@ import java.util.Optional;
 public interface GameService {
 
     GameDto createGame(GameDto gameDto);
-    GameDto getGameById(long gameId);
+    GameEntity getGameById(long gameId);
 
-    List<GameDto> getAllGames();
+    List<GameEntity> getAllGames();
+    GameEntity createGame(GameEntity gameEntity);
+
+    boolean existById(long id);
 
     void deleteGame(long gameId);
 

@@ -10,9 +10,9 @@ public class GameEntity {
     private long id;
     private long id_player;
 
-    @Column(unique = true)
+//    @Column(unique = true)
     private long id_board;
-    @Column(unique = true)
+//    @Column(unique = true)
     private long id_personnage;
 
     public GameEntity() {
@@ -21,6 +21,13 @@ public class GameEntity {
     public GameEntity(long id, long idPersonnage) {
         this.id=id;
         this.id_personnage=idPersonnage;
+    }
+
+    public GameEntity(long id, long idPersonnage, long idBoard, long idPlayer) {
+        this.id = id;
+        this.id_personnage = idPersonnage;
+        this.id_board = idBoard;
+        this.id_player = idPlayer;
     }
 
     public long getId() {

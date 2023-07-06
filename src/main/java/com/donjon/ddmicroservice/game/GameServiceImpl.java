@@ -19,20 +19,30 @@ private final GameRepository gameRepository;
     }
 
     @Override
-    public GameDto getGameById(long gameId) {
-        Optional<GameEntity> optionalGame = gameRepository.findById(gameId);
-        GameEntity game = optionalGame.get();
-        return GameMapper.mapToGameDto(game);
+    public GameEntity getGameById(long gameId) {
+        GameEntity optionalGame = gameRepository.findById(gameId).orElse(null);
+        return optionalGame;
     }
 
     @Override
-    public List<GameDto> getAllGames() {
-        List<GameEntity> games = gameRepository.findAll();
-        return null;
+    public List<GameEntity> getAllGames() {
+        return gameRepository.findAll();
+    }
+
+
+    @Override
+    public GameEntity createGame(GameEntity gameEntity){
+        gameRepository.save(gameEntity);
+        return gameEntity;
+    }
+
+    @Override
+    public boolean existById(long id){
+        return gameRepository.existsById(id);
     }
 
     @Override
     public void deleteGame(long gameId) {
-
+        gameRepository.deleteById(gameId);
     }
 }

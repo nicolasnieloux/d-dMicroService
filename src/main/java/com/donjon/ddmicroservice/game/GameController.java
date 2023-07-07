@@ -20,8 +20,23 @@ public class GameController {
         return gameService.getAllGames();
     }
     @GetMapping("/game/{id}")
-        public GameEntity getGameById(@PathVariable int id) {
-            return gameService.getGameById(id);
+        public GameDto getGameById(@PathVariable int id) {
+        GameEntity thisGame = gameService.getGameById(id);
+        GameDto gameDto = new GameDto(thisGame.getId_player());
+        gameDto.setId(id);
+
+        RestTemplate restTemplatePersonnage = new RestTemplate();
+        GameDto personnage = restTemplatePersonnage.getForObject("http://localhost:8081/api/character/" + thisGame.getId_personnage(), GameDto.class);
+        gameDto.setIdPersonnage(personnage.getId());
+        gameDto.setName(personnage.getName());
+        gameDto.setType(personnage.getType());
+        gameDto.setHp(personnage.getHp());
+
+        RestTemplate restTemplateBoard = new RestTemplate();
+//        GameDto board = restTemplateBoard.getForObject("http://board/" + thisGame.getId_board(), GameDto.class);
+        gameDto.setIdBoard(thisGame.getId_board());
+
+        return gameDto;
         }
 
     @PostMapping("/game")
@@ -37,9 +52,12 @@ public class GameController {
         RestTemplate restTemplatePersonnage = new RestTemplate();
 
         HttpEntity<GameDto> request = new HttpEntity<>(newGame, headersPersonnage);
-//        ResponseEntity<GameDto> responseCharacter = restTemplatePersonnage.postForEntity("http://character", request , GameDto.class);
-//        newGame.setIdPersonnage(responseCharacter.getBody().getIdPersonnage());
-        newGame.setIdPersonnage(123);
+        try {
+            ResponseEntity<GameDto> responseCharacter = restTemplatePersonnage.postForEntity("http://localhost:8081/api/character", request , GameDto.class);
+            newGame.setIdPersonnage(responseCharacter.getBody().getId());
+        }catch (Exception e){
+            newGame.setIdPersonnage(123);
+        }
 
         HttpHeaders headersBoard = new HttpHeaders();
         headersBoard.setContentType(MediaType.APPLICATION_JSON);
@@ -63,15 +81,11 @@ public class GameController {
 
     @DeleteMapping("/game/{id}")
     public void deleteGame(@PathVariable("id") int id) {
-//        RestTemplate restTemplate = new RestTemplate();
-//        restTemplate.delete("http://character/" + id);
-//        restTemplate.delete("http://board/" + id);
+        GameEntity delGame = gameService.getGameById(id);
+        RestTemplate restTemplate = new RestTemplate();
+//        restTemplate.delete("http://character/" + delGame.getId_personnage());
+//        restTemplate.delete("http://board/" + delGame.getId_board());
         gameService.deleteGame(id);
     }
-
-//    @GetMapping("/game/{id}")
-//    public Optional<GameEntity> findById(@PathVariable int id){
-//        return gameService.findById(id);
-//    }
 
 }
